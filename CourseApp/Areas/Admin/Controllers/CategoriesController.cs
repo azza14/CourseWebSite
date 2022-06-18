@@ -26,17 +26,6 @@ namespace CourseApp.Areas.Admin.Controllers
         {
             var categories = service.ReadAll();
             var categoriesList = mapper.Map < List<CategoryModel>> (categories);
-            //var categoriesList = new List<CategoryModel>();
-            //foreach (var item in categories)
-            //{
-            //    categoriesList.Add(new CategoryModel
-            //    {
-            //        Id = item.Id,
-            //        Name = item.Name,
-            //        ParentName= item.Category2?.Name
-
-            //    });
-            //}
             return View(categoriesList);
         }
 
@@ -49,13 +38,9 @@ namespace CourseApp.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create(CategoryModel categoryInfo)
         {
-          
-                var result = service.AddCategory(new Category
-                {
-                    Name = categoryInfo.Name,
-                    ParentId= categoryInfo.ParentId
-                });
-
+            var newCategory = mapper.Map<Category>(categoryInfo);
+                newCategory.Category2 = null;
+          var result = service.AddCategory(newCategory);
                 if (result == -2)
                 {
                 InitMainCategories( null,ref categoryInfo);
@@ -92,12 +77,14 @@ namespace CourseApp.Areas.Admin.Controllers
         {
             try
             {
-                var updatedCategory = new Category
-                {
-                    Id= data.Id,
-                    Name = data.Name,
-                    ParentId = data.ParentId
-                };
+                //var updatedCategory = new Category
+                //{
+                //    Id= data.Id,
+                //    Name = data.Name,
+                //    ParentId = data.ParentId
+                //};
+                var updatedCategory = mapper.Map<Category>(data);
+                updatedCategory.Category2 = null;
                 var result = service.UpdateCategory(updatedCategory);
                 if (result == -2)
                 {
