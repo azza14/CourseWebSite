@@ -22,6 +22,8 @@ namespace CourseApp.App_Start
                  .ForMember(dst=> dst.ParentName,src=>src.MapFrom(e=>e.Category2.Name))
                  .ReverseMap();
 
+                 cfg.CreateMap<Trainer, TrainerModel>().ReverseMap();
+
              });
           Mapper=  config.CreateMapper();
         }
